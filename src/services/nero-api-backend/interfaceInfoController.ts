@@ -47,6 +47,21 @@ export async function getInterfaceInfoVOByIdUsingGET(
     });
 }
 
+/** invokeInterfaceInfo POST /api/interfaceInfo/invoke */
+export async function invokeInterfaceInfoUsingPOST(
+    body: API.InterfaceInfoInvokeRequest,
+    options?: { [key: string]: any },
+) {
+    return request<API.BaseResponseObject_>('/api/interfaceInfo/invoke', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: body,
+        ...(options || {}),
+    });
+}
+
 /** listInterfaceInfoVOByPage POST /api/interfaceInfo/list/page/vo */
 export async function listInterfaceInfoVOByPageUsingPOST(
     body: API.InterfaceInfoQueryRequest,
