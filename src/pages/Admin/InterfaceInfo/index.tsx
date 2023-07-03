@@ -180,26 +180,61 @@ const TableList: React.FC = () => {
             title: '描述',
             dataIndex: 'description',
             valueType: 'textarea',
+            formItemProps: {
+                rules: [
+                    {
+                        required: true,
+                    },
+                ],
+            },
         },
         {
             title: '请求方法',
             dataIndex: 'method',
             valueType: 'text',
+            formItemProps: {
+                rules: [
+                    {
+                        required: true,
+                    },
+                ],
+            },
         },
         {
             title: '主机名',
             dataIndex: 'host',
             valueType: 'text',
+            formItemProps: {
+                rules: [
+                    {
+                        required: true,
+                    },
+                ],
+            },
         },
         {
             title: '接口地址',
             dataIndex: 'url',
             valueType: 'text',
+            formItemProps: {
+                rules: [
+                    {
+                        required: true,
+                    },
+                ],
+            },
         },
         {
             title: '请求参数',
             dataIndex: 'requestParams',
             valueType: 'jsonCode',
+            formItemProps: {
+                rules: [
+                    {
+                        required: true,
+                    },
+                ],
+            },
         },
         {
             title: '请求头',
@@ -234,7 +269,7 @@ const TableList: React.FC = () => {
         },
         {
             title: '更新时间',
-            dataIndex: 'createTime',
+            dataIndex: 'updateTime',
             valueType: 'dateTime',
             hideInForm: true,
         },
