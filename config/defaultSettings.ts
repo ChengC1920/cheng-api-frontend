@@ -11,11 +11,11 @@ const Settings: ProLayoutProps & {
     // 拂晓蓝
     colorPrimary: '#1890ff',
     layout: 'top',
-    contentWidth: 'Fluid',
-    fixedHeader: false,
+    contentWidth: 'Fixed',
+    fixedHeader: true,
     fixSiderbar: true,
-    colorWeak: false,
-    title: 'Ant Design Pro',
+    colorWeak: true,
+    title: '雷神API',
     pwa: true,
     logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
     iconfontUrl: '',
@@ -25,5 +25,4 @@ const Settings: ProLayoutProps & {
     },
     splitMenus: false,
 };
-
 export default Settings;

@@ -37,7 +37,6 @@ const Index: React.FC = () => {
             return;
         }
         setInvokeLoading(true);
-        console.log('data', data);
         try {
             await invokeInterfaceInfoUsingPOST({
                 id: params.id,

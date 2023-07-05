@@ -14,7 +14,6 @@ const Profile: React.FC = () => {
                 id: initialState?.loginUser?.id
             }).then((res) => {
                 if (res.data) {
-                    console.log(res.data)
                     setData(res.data);
                 }
             })
@@ -25,18 +24,13 @@ const Profile: React.FC = () => {
 
     return (
         <PageContainer>
-            <Row gutter={16}>
+            <Row gutter={24}>
                 <Col span={8}>
                     <Card title="Card title" bordered={false}>
                         Card content
                     </Card>
                 </Col>
-                <Col span={8}>
-                    <Card title="Card title" bordered={false}>
-                        Card content
-                    </Card>
-                </Col>
-                <Col span={8}>
+                <Col span={16}>
                     <Card title="Card title" bordered={false}>
                         Card content
                     </Card>
