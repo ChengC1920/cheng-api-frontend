@@ -1,4 +1,5 @@
 import CreateModal from '@/pages/Admin/InterfaceInfo/components/CreateModal';
+import ShowModal from '@/pages/Admin/InterfaceInfo/components/ShowModal';
 import UpdateModal from '@/pages/Admin/InterfaceInfo/components/UpdateModal';
 import {
     addInterfaceInfoUsingPOST,
@@ -10,12 +11,7 @@ import {
 } from '@/services/nero-api-backend/interfaceInfoController';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import {
-    FooterToolbar,
-    PageContainer,
-    ProDescriptions,
-    ProTable,
-} from '@ant-design/pro-components';
+import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
@@ -31,10 +27,10 @@ const TableList: React.FC = () => {
      * @zh-CN 分布更新窗口的弹窗
      * */
     const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+    const [showModalOpen, handleShowModalOpen] = useState<boolean>(false);
     const [showDetail, setShowDetail] = useState<boolean>(false);
     const actionRef = useRef<ActionType>();
     const [currentRow, setCurrentRow] = useState<API.InterfaceInfoVO>();
-    const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
 
     /**
      * @en-US Add node
@@ -155,8 +151,7 @@ const TableList: React.FC = () => {
     };
 
     /**
-     * @en-US International configuration
-     * @zh-CN 国际化配置
+     * table 展示的列
      * */
     const columns: ProColumns<API.InterfaceInfoVO>[] = [
         {
@@ -204,6 +199,8 @@ const TableList: React.FC = () => {
             title: '主机名',
             dataIndex: 'host',
             valueType: 'text',
+            hideInTable: true,
+            hideInSearch: true,
             formItemProps: {
                 rules: [
                     {
@@ -216,6 +213,8 @@ const TableList: React.FC = () => {
             title: '接口地址',
             dataIndex: 'url',
             valueType: 'text',
+            hideInTable: true,
+            hideInSearch: true,
             formItemProps: {
                 rules: [
                     {
@@ -228,6 +227,8 @@ const TableList: React.FC = () => {
             title: '请求参数',
             dataIndex: 'requestParams',
             valueType: 'jsonCode',
+            hideInTable: true,
+            hideInSearch: true,
             formItemProps: {
                 rules: [
                     {
@@ -240,11 +241,15 @@ const TableList: React.FC = () => {
             title: '请求头',
             dataIndex: 'requestHeader',
             valueType: 'jsonCode',
+            hideInTable: true,
+            hideInSearch: true,
         },
         {
             title: '响应头',
             dataIndex: 'responseHeader',
             valueType: 'jsonCode',
+            hideInTable: true,
+            hideInSearch: true,
         },
         {
             title: '状态',
@@ -272,6 +277,8 @@ const TableList: React.FC = () => {
             dataIndex: 'updateTime',
             valueType: 'dateTime',
             hideInForm: true,
+            hideInTable: true,
+            hideInSearch: true,
         },
         {
             title: '操作',
@@ -281,7 +288,16 @@ const TableList: React.FC = () => {
                 return record.status === 0
                     ? [
                           <Button
-                              key="config"
+                              key="detail"
+                              onClick={() => {
+                                  handleShowModalOpen(true);
+                                  setCurrentRow(record);
+                              }}
+                          >
+                              详情
+                          </Button>,
+                          <Button
+                              key="update"
                               onClick={() => {
                                   handleUpdateModalOpen(true);
                                   setCurrentRow(record);
@@ -290,7 +306,7 @@ const TableList: React.FC = () => {
                               修改
                           </Button>,
                           <Button
-                              key="config"
+                              key="online"
                               onClick={() => {
                                   handleOnline(record);
                               }}
@@ -299,7 +315,7 @@ const TableList: React.FC = () => {
                           </Button>,
                           <Button
                               danger
-                              key="config"
+                              key="remove"
                               onClick={() => {
                                   handleRemove(record);
                               }}
@@ -309,7 +325,16 @@ const TableList: React.FC = () => {
                       ]
                     : [
                           <Button
-                              key="config"
+                              key="detail"
+                              onClick={() => {
+                                  handleShowModalOpen(true);
+                                  setCurrentRow(record);
+                              }}
+                          >
+                              详情
+                          </Button>,
+                          <Button
+                              key="update"
                               onClick={() => {
                                   handleUpdateModalOpen(true);
                                   setCurrentRow(record);
@@ -318,7 +343,7 @@ const TableList: React.FC = () => {
                               修改
                           </Button>,
                           <Button
-                              key="config"
+                              key="online"
                               onClick={() => {
                                   handleOffline(record);
                               }}
@@ -327,7 +352,7 @@ const TableList: React.FC = () => {
                           </Button>,
                           <Button
                               danger
-                              key="config"
+                              key="remove"
                               onClick={() => {
                                   handleRemove(record);
                               }}
@@ -338,7 +363,6 @@ const TableList: React.FC = () => {
             },
         },
     ];
-    // @ts-ignore
     return (
         <PageContainer>
             <ProTable<API.InterfaceInfoVO, API.PageParams>
@@ -359,16 +383,15 @@ const TableList: React.FC = () => {
                         <PlusOutlined /> 新建
                     </Button>,
                 ]}
-                // @ts-ignore
                 request={async (params) => {
                     const res = await listInterfaceInfoVOByPageUsingPOST({
                         ...params,
                     });
                     if (res?.data) {
                         return {
-                            data: res?.data.records || [],
+                            data: res?.data.records ?? [],
                             success: true,
-                            total: res.data.total || 0,
+                            total: res.data.total ?? 0,
                         };
                     } else {
                         return {
@@ -379,44 +402,7 @@ const TableList: React.FC = () => {
                     }
                 }}
                 columns={columns}
-                rowSelection={{
-                    onChange: (_, selectedRows) => {
-                        setSelectedRows(selectedRows);
-                    },
-                }}
             />
-            {selectedRowsState?.length > 0 && (
-                <FooterToolbar
-                    extra={
-                        <div>
-                            已选择{' '}
-                            <a
-                                style={{
-                                    fontWeight: 600,
-                                }}
-                            >
-                                {selectedRowsState.length}
-                            </a>{' '}
-                            项 &nbsp;&nbsp;
-                            <span>
-                                服务调用次数总计{' '}
-                                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)} 万
-                            </span>
-                        </div>
-                    }
-                >
-                    {/* <Button
-                        onClick={async () => {
-                            await handleRemove(selectedRowsState);
-                            setSelectedRows([]);
-                            actionRef.current?.reloadAndRest?.();
-                        }}
-                    >
-                        批量删除
-                    </Button>*/}
-                    <Button type="primary">批量审批</Button>
-                </FooterToolbar>
-            )}
 
             <UpdateModal
                 columns={columns}
@@ -437,7 +423,7 @@ const TableList: React.FC = () => {
                     }
                 }}
                 visible={updateModalOpen}
-                values={currentRow || {}}
+                values={currentRow ?? {}}
             />
 
             <Drawer
@@ -463,6 +449,17 @@ const TableList: React.FC = () => {
                     />
                 )}
             </Drawer>
+
+            <ShowModal
+                onCancel={() => {
+                    handleShowModalOpen(false);
+                    if (!showDetail) {
+                        setCurrentRow(undefined);
+                    }
+                }}
+                visible={showModalOpen}
+                values={currentRow ?? {}}
+            />
             <CreateModal
                 columns={columns}
                 onCancel={() => {
