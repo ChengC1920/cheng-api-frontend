@@ -1,5 +1,5 @@
 export default [
-    {name: '主页', icon: 'smile', path: '/', component: './Index'},
+    {name: '主页', icon: 'HomeOutlined', path: '/', component: './Index'},
     {
         name: '查看接口',
         icon: 'smile',
@@ -15,7 +15,7 @@ export default [
     // { path: '/welcome', name: '欢迎', icon: 'smile', component: './Index' },
     {
         path: '/admin',
-        name: '管理页',
+        name: '管理页面',
         icon: 'crown',
         access: 'canAdmin',
         routes: [
@@ -34,7 +34,7 @@ export default [
 
         ],
     },
-    {name: '个人中心', icon: 'table', path: '/profile', component: './User/Profile'},
+    {name: '个人中心', icon: 'UserOutlined', path: '/profile', component: './User/Profile'},
     // {name: '接口管理', icon: 'table', path: '/list', component: './InterfaceInfo'},
     // {path: '/', redirect: '/welcome'},
     {path: '*', layout: false, component: './404'},
