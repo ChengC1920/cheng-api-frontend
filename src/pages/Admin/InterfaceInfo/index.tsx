@@ -28,6 +28,7 @@ const TableList: React.FC = () => {
      * */
     const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
     const [showModalOpen, handleShowModalOpen] = useState<boolean>(false);
+
     const [showDetail, setShowDetail] = useState<boolean>(false);
     const actionRef = useRef<ActionType>();
     const [currentRow, setCurrentRow] = useState<API.InterfaceInfoVO>();
@@ -296,6 +297,7 @@ const TableList: React.FC = () => {
                           >
                               详情
                           </Button>,
+
                           <Button
                               key="update"
                               onClick={() => {
@@ -451,15 +453,11 @@ const TableList: React.FC = () => {
             </Drawer>
 
             <ShowModal
-                onCancel={() => {
-                    handleShowModalOpen(false);
-                    if (!showDetail) {
-                        setCurrentRow(undefined);
-                    }
-                }}
-                visible={showModalOpen}
+                setHandleShowModalOpen={handleShowModalOpen}
                 values={currentRow ?? {}}
+                showModalOpen={showModalOpen}
             />
+
             <CreateModal
                 columns={columns}
                 onCancel={() => {

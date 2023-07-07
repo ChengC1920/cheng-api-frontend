@@ -1,94 +1,107 @@
-import { ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components';
+import {
+    DrawerForm,
+    ProColumns,
+    ProForm,
+    ProFormDateRangePicker,
+    ProFormSelect,
+    ProFormText
+} from '@ant-design/pro-components';
 import '@umijs/max';
-import { Modal } from 'antd';
-import React, { useEffect, useRef } from 'react';
-
-export type FormValueType = {
-    target?: string;
-    template?: string;
-    type?: string;
-    time?: string;
-    frequency?: string;
-} & Partial<API.RuleListItem>;
+import React from 'react';
 
 export type Props = {
     values: API.InterfaceInfoVO;
-    onCancel: () => void;
-    visible: boolean;
+    setHandleShowModalOpen: (visible: boolean) => void;
+    showModalOpen: boolean;
 };
 
-/**
- * table 展示的列
- * */
-const columns: ProColumns<API.InterfaceInfoVO>[] = [
-    {
-        title: 'id',
-        dataIndex: 'id',
-        valueType: 'index',
-        readonly: true,
-        render: (_) => <p>{_}</p>,
-    },
-    {
-        title: '接口名称',
-        dataIndex: 'name',
-        valueType: 'text',
-        readonly: true,
-    },
-    {
-        title: '描述',
-        dataIndex: 'description',
-        valueType: 'textarea',
-        readonly: true,
-    },
-    {
-        title: '请求方法',
-        dataIndex: 'method',
-        valueType: 'text',
-        readonly: true,
-    },
-    {
-        title: '主机名',
-        dataIndex: 'host',
-        valueType: 'text',
-        readonly: true,
-    },
-    {
-        title: '接口地址',
-        dataIndex: 'url',
-        valueType: 'text',
-        readonly: true,
-    },
-    {
-        title: '请求参数',
-        dataIndex: 'requestParams',
-        valueType: 'jsonCode',
-        readonly: true,
-    },
-    {
-        title: '请求头',
-        dataIndex: 'requestHeader',
-        valueType: 'jsonCode',
-        readonly: true,
-    },
-    {
-        title: '响应头',
-        dataIndex: 'responseHeader',
-        valueType: 'jsonCode',
-        readonly: true,
-    },
-];
 const ShowModal: React.FC<Props> = (props) => {
-    const { values, visible, onCancel } = props;
-    const formRef = useRef<ProFormInstance>();
-    useEffect(() => {
-        if (formRef) {
-            formRef.current?.setFieldsValue(values);
-        }
-    }, [values]);
+    const {values, setHandleShowModalOpen, showModalOpen} = props;
+
     return (
-        <Modal open={visible} footer={null} onCancel={() => onCancel?.()}>
-            <ProTable type={'form'} columns={columns} formRef={formRef} />
-        </Modal>
+        <DrawerForm
+            onOpenChange={setHandleShowModalOpen}
+            title="查看接口"
+            open={showModalOpen}
+            submitter={false}
+        >
+            <ProForm.Group>
+                <ProFormText
+                    width="md"
+                    name="name"
+                    disabled
+                    label="接口名称"
+                    initialValue={ values.name }
+                />
+
+                <ProFormText
+                    width="md"
+                    name="description"
+                    disabled
+                    label="描述"
+                    initialValue={ values.description }
+                />
+            </ProForm.Group>
+            <ProForm.Group>
+                <ProFormText
+                    width="md"
+                    name="method"
+                    disabled
+                    label="请求方法"
+                    initialValue={ values.method }
+                />
+
+                <ProFormText
+                    width="md"
+                    name="host"
+                    disabled
+                    label="主机名"
+                    initialValue={ values.host }
+                />
+            </ProForm.Group>
+            <ProForm.Group>
+                <ProFormText
+                    width="md"
+                    name="host"
+                    disabled
+                    label="主机名"
+                    initialValue={ values.host }
+                />
+
+                <ProFormText
+                    width="md"
+                    name="url"
+                    disabled
+                    label="接口地址"
+                    initialValue={ values.url }
+                />
+            </ProForm.Group>
+            <ProForm.Group>
+                <ProFormText
+                    width="md"
+                    name="requestParams"
+                    disabled
+                    label="请求参数"
+                    initialValue={ values.requestParams }
+                />
+
+                <ProFormText
+                    width="md"
+                    name="requestHeader"
+                    disabled
+                    label="请求头"
+                    placeholder={""}
+                    initialValue={ values.requestHeader }
+                />
+            </ProForm.Group>
+            <ProFormText
+                name="responseHeader"
+                disabled
+                label="响应头"
+                placeholder={""}
+                initialValue={ values.responseHeader }
+            />
+        </DrawerForm>
     );
 };
 export default ShowModal;

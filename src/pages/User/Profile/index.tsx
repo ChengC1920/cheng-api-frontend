@@ -2,7 +2,7 @@ import {PageContainer} from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
 import {getUserVOByIdUsingGET} from "@/services/nero-api-backend/userController";
 import {useModel} from "@@/exports";
-import { Card, Col, Row } from 'antd';
+import {Card, Col, Row} from 'antd';
 
 const Profile: React.FC = () => {
     const [data, setData] = useState<API.UserVO>({});
@@ -26,12 +26,12 @@ const Profile: React.FC = () => {
         <PageContainer>
             <Row gutter={24}>
                 <Col span={8}>
-                    <Card title="Card title" bordered={false}>
-                        Card content
+                    <Card title="个人信息" bordered={false}>
+
                     </Card>
                 </Col>
                 <Col span={16}>
-                    <Card title="Card title" bordered={false}>
+                    <Card title="秘钥操作" bordered={false}>
                         Card content
                     </Card>
                 </Col>
