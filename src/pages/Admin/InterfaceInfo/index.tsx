@@ -9,11 +9,11 @@ import {
     onlineInterfaceInfoUsingPOST,
     updateInterfaceInfoUsingPOST,
 } from '@/services/nero-api-backend/interfaceInfoController';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, Drawer, message } from 'antd';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 
 const TableList: React.FC = () => {
@@ -47,6 +47,7 @@ const TableList: React.FC = () => {
             hide();
             message.success('创建成功');
             handleModalOpen(false);
+            actionRef.current?.reload();
             return true;
         } catch (error: any) {
             hide();
@@ -110,15 +111,20 @@ const TableList: React.FC = () => {
      *
      * @param record
      */
-    const handleOnline = async (record: API.IdRequest) => {
+    const handleOnline = async (record: API.InterfaceInfoInvokeRequest) => {
         const hide = message.loading('发布中');
         if (!record) return true;
         try {
-            await onlineInterfaceInfoUsingPOST({
+            const res = await onlineInterfaceInfoUsingPOST({
+                host: record.host,
                 id: record.id,
+                method: record.method,
+                requestParams: record.requestParams,
             });
+            if (res.code === 0) {
+                message.success('发布成功');
+            }
             hide();
-            message.success('发布成功');
             actionRef.current?.reload();
             return true;
         } catch (error) {
@@ -352,16 +358,82 @@ const TableList: React.FC = () => {
                           >
                               下线
                           </Button>,
-                          <Button
-                              danger
+                          <Popconfirm
+                              title="删除数据"
                               key="remove"
-                              onClick={() => {
+                              description="确认删除该数据吗？"
+                              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                              onConfirm={() => {
                                   handleRemove(record);
                               }}
                           >
-                              删除
-                          </Button>,
+                              <Button danger>删除</Button>
+                          </Popconfirm>,
                       ];
+            },
+        },
+    ];
+
+    const requestColumns: ProColumns<API.RequestParamsRemarkVO>[] = [
+        {
+            title: '名称',
+            dataIndex: 'name',
+            width: '15%',
+        },
+        {
+            title: '必填',
+            key: 'isRequired',
+            dataIndex: 'isRequired',
+            valueType: 'select',
+            valueEnum: {
+                yes: {
+                    text: '是',
+                },
+                no: {
+                    text: '否',
+                },
+            },
+            width: '15%',
+        },
+        {
+            title: '类型',
+            dataIndex: 'type',
+            width: '15%',
+        },
+        {
+            title: '说明',
+            dataIndex: 'remark',
+        },
+        {
+            title: '操作',
+            valueType: 'option',
+            width: '10%',
+            render: () => {
+                return null;
+            },
+        },
+    ];
+    const responseColumns: ProColumns<API.RequestParamsRemarkVO>[] = [
+        {
+            title: '名称',
+            dataIndex: 'name',
+            width: '15%',
+        },
+        {
+            title: '类型',
+            dataIndex: 'type',
+            width: '15%',
+        },
+        {
+            title: '说明',
+            dataIndex: 'remark',
+        },
+        {
+            title: '操作',
+            valueType: 'option',
+            width: '10%',
+            render: () => {
+                return null;
             },
         },
     ];
@@ -386,6 +458,7 @@ const TableList: React.FC = () => {
                     </Button>,
                 ]}
                 request={async (params) => {
+                    console.log('---------->', params);
                     const res = await listInterfaceInfoVOByPageUsingPOST({
                         ...params,
                     });
@@ -418,14 +491,11 @@ const TableList: React.FC = () => {
                         }
                     }
                 }}
-                onCancel={() => {
-                    handleUpdateModalOpen(false);
-                    if (!showDetail) {
-                        setCurrentRow(undefined);
-                    }
-                }}
+                setVisible={handleUpdateModalOpen}
                 visible={updateModalOpen}
                 values={currentRow ?? {}}
+                requestColumns={requestColumns}
+                responseColumns={responseColumns}
             />
 
             <Drawer
@@ -453,21 +523,22 @@ const TableList: React.FC = () => {
             </Drawer>
 
             <ShowModal
-                setHandleShowModalOpen={handleShowModalOpen}
+                setVisible={handleShowModalOpen}
                 values={currentRow ?? {}}
-                showModalOpen={showModalOpen}
+                visible={showModalOpen}
+                requestColumns={requestColumns}
+                responseColumns={responseColumns}
             />
 
             <CreateModal
                 columns={columns}
-                onCancel={() => {
-                    handleModalOpen(false);
-                }}
-                // @ts-ignore
+                setVisible={handleModalOpen}
                 onSubmit={(values) => {
-                    handleAdd(values);
+                    return handleAdd(values).then((r) => {});
                 }}
                 visible={createModalOpen}
+                requestColumns={requestColumns}
+                responseColumns={responseColumns}
             />
         </PageContainer>
     );
