@@ -114,7 +114,7 @@ const Index: React.FC = () => {
                                 <Badge status="default" text={'关闭'} />
                             )}
                         </Descriptions.Item>
-                        {/*<Descriptions.Item label="主机名">{data.host}</Descriptions.Item>*/}
+                        <Descriptions.Item label="主机名">{data.host}</Descriptions.Item>
                         <Descriptions.Item label="请求地址">{data.url}</Descriptions.Item>
                         <Descriptions.Item label="请求方法">{data.method}</Descriptions.Item>
                         <Descriptions.Item label="请求参数示例" span={4}>

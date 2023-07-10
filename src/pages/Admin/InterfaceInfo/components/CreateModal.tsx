@@ -37,6 +37,7 @@ const CreateModal: React.FC<Props> = (props) => {
     return (
         <DrawerForm<API.InterfaceInfoVO>
             onFinish={async (value) => {
+                console.log('---------->', value);
                 onSubmit?.(value);
             }}
             formRef={formRef}

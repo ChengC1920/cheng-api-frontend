@@ -1,19 +1,35 @@
 import {
     getUserVOByIdUsingGET,
     updateSecretKeyUsingPOST,
+    updateUserUsingPOST,
     userLoginUsingPOST,
 } from '@/services/nero-api-backend/userController';
 import { useModel } from '@@/exports';
 import {
     CommentOutlined,
     FieldTimeOutlined,
+    LoadingOutlined,
     LockOutlined,
+    PlusOutlined,
     UnlockOutlined,
     UserOutlined,
     VerifiedOutlined,
 } from '@ant-design/icons';
 import { PageContainer, ProForm, ProFormInstance, ProFormText } from '@ant-design/pro-components';
-import { Avatar, Button, Card, Col, Divider, message, Modal, Row, Typography } from 'antd';
+import {
+    Button,
+    Card,
+    Col,
+    Divider,
+    message,
+    Modal,
+    Row,
+    Typography,
+    Upload,
+    UploadFile,
+    UploadProps,
+} from 'antd';
+import { RcFile, UploadChangeParam } from 'antd/es/upload';
 import React, { useEffect, useRef, useState } from 'react';
 
 const { Paragraph } = Typography;
@@ -26,12 +42,30 @@ const buttonStyle: React.CSSProperties = {
     marginLeft: '30px',
 };
 
+/**
+ * 上传前校验
+ * @param file 文件
+ */
+const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('仅允许上传 JPG/PNG 格式的文件!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 5;
+    if (!isLt2M) {
+        message.error('文件最大上传大小为 5MB!');
+    }
+    return isJpgOrPng && isLt2M;
+};
+
 const Profile: React.FC = () => {
     const [data, setData] = useState<API.UserVO>({});
     const [visible, setVisible] = useState<boolean>(false);
     const [flag, setFlag] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
-    const { initialState } = useModel('@@initialState');
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string>();
+    const { initialState, setInitialState } = useModel('@@initialState');
     const formRef = useRef<
         ProFormInstance<{
             userPassword: string;
@@ -50,7 +84,9 @@ const Profile: React.FC = () => {
     const getUserInfo = async (id: any) => {
         return getUserVOByIdUsingGET({ id }).then((res) => {
             if (res.data) {
+                setInitialState((s: any) => ({ ...s, loginUser: res.data }));
                 setData(res.data);
+                setImageUrl(res.data.userAvatar);
             }
         });
     };
@@ -70,6 +106,48 @@ const Profile: React.FC = () => {
             formRef?.current?.resetFields();
         }
     };
+
+    // 更新用户头像
+    const updateUserAvatar = async (id: number, userAvatar: string) => {
+        // 更新用户头像
+        const res = await updateUserUsingPOST({
+            id,
+            userAvatar,
+        });
+        if (res.code !== 0) {
+            message.success(`更新用户头像失败`);
+        } else {
+            getUserInfo(id);
+        }
+    };
+
+    /**
+     * 上传图片
+     * @param info
+     */
+    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+        if (info.file.status === 'uploading') {
+            setLoading(true);
+            return;
+        }
+        if (info.file.status === 'done') {
+            if (info.file.response.code === 0) {
+                message.success(`上传成功`);
+                const id = initialState?.loginUser?.id as number;
+                const userAvatar = info.file.response.data.url;
+                setLoading(false);
+                setImageUrl(userAvatar);
+                updateUserAvatar(id, userAvatar);
+            }
+        }
+    };
+
+    const uploadButton = (
+        <div>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+    );
 
     // 重置秘钥
     const resetSecretKey = async () => {
@@ -101,10 +179,24 @@ const Profile: React.FC = () => {
                     <Card title="个人信息" bordered={false}>
                         <Row>
                             <Col style={avatarStyle}>
-                                <Avatar
-                                    size={120}
-                                    src={<img src={data?.userAvatar} alt="avatar" />}
-                                />
+                                <Upload
+                                    name="file"
+                                    listType="picture-circle"
+                                    showUploadList={false}
+                                    action="http://localhost:8101/api/file/upload"
+                                    beforeUpload={beforeUpload}
+                                    onChange={handleChange}
+                                >
+                                    {imageUrl ? (
+                                        <img
+                                            src={data?.userAvatar}
+                                            alt="avatar"
+                                            style={{ width: '100%', borderRadius: '50%' }}
+                                        />
+                                    ) : (
+                                        uploadButton
+                                    )}
+                                </Upload>
                             </Col>
                         </Row>
                         <Divider />

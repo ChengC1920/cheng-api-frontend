@@ -31,7 +31,7 @@ const Index: React.FC = () => {
     const [total, setTotal] = useState<number>(0);
     const [current, setCurrent] = useState<number>(1);
     const [list, setList] = useState<API.InterfaceInfoVO[]>([]);
-    const loadData = async (searchText = '', current = 1, pageSize = 5) => {
+    const loadData = async (searchText = '', current = 1, pageSize = 6) => {
         setLoading(true);
         try {
             await listInterfaceInfoVOByUserIdPageUsingPOST({
@@ -132,10 +132,10 @@ const Index: React.FC = () => {
                         <Pagination
                             showQuickJumper
                             showSizeChanger
-                            pageSizeOptions={[5, 10, 20, 30]}
+                            pageSizeOptions={[6, 10, 20, 30]}
                             current={current}
                             onShowSizeChange={onSizeChange}
-                            defaultPageSize={5}
+                            defaultPageSize={6}
                             total={total}
                             onChange={onChange}
                         />
