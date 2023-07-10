@@ -1,5 +1,4 @@
 import { ProLayoutProps } from '@ant-design/pro-components';
-
 /**
  * @name
  */
@@ -15,10 +14,10 @@ const Settings: ProLayoutProps & {
     fixedHeader: true,
     fixSiderbar: true,
     colorWeak: true,
-    title: '雷神API',
+    title: 'Panda API',
     siderMenuType: 'sub',
     pwa: true,
-    logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+    logo: "https://image-bed-ichensw.oss-cn-hangzhou.aliyuncs.com/logo.png",
     iconfontUrl: '',
     token: {
         // 参见ts声明，demo 见文档，通过token 修改样式

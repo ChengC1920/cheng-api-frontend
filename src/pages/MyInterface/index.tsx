@@ -14,7 +14,7 @@ const headerStyle: React.CSSProperties = {
     paddingInline: '30%',
     lineHeight: '64px',
     color: '#fff',
-    background: '#fcfcfc',
+    background: 'none',
 };
 const footerStyle: React.CSSProperties = {
     textAlign: 'center',

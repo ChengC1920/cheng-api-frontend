@@ -6,6 +6,8 @@ import {useModel} from '@umijs/max';
 import {message, Tabs} from 'antd';
 import type {CSSProperties} from 'react';
 import React, {useRef, useState} from 'react';
+import pandaBackImg from '../../../../public/panda2.jpg';
+import logo from '../../../../public/logo.png';
 
 type LoginType = 'account' | 'register' | 'forgetPassword';
 
@@ -71,9 +73,10 @@ const Login: React.FC = () => {
                 }}
             >
                 <LoginFormPage
-                    backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
-                    logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
-                    title="雷神API"
+                    backgroundImageUrl={pandaBackImg}
+                    // logo="https://image-bed-ichensw.oss-cn-hangzhou.aliyuncs.com/logo.png"
+                    logo={logo}
+                    title="Panda API"
                     subTitle="史上最好用的免费API接口平台"
                     initialValues={{
                         autoLogin: true,
