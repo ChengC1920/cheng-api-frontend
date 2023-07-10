@@ -2,9 +2,9 @@ import { listInterfaceInfoVOByUserIdPageUsingPOST } from '@/services/nero-api-ba
 import { ShareAltOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
-import { Card, Layout, List, message, Tooltip } from 'antd';
+import { Card, Layout, List, message, Pagination, PaginationProps, Tooltip } from 'antd';
 import Search from 'antd/es/input/Search';
-import { Content, Header } from 'antd/es/layout/layout';
+import { Content, Footer, Header } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import indexStyle from './index.less';
 
@@ -16,14 +16,8 @@ const headerStyle: React.CSSProperties = {
     color: '#fff',
     background: '#fcfcfc',
 };
-
-const tabsCard: React.CSSProperties = {
+const footerStyle: React.CSSProperties = {
     textAlign: 'center',
-    height: '64px',
-    paddingInline: '30%',
-    lineHeight: '64px',
-    color: '#fff',
-    background: '#fcfcfc',
 };
 
 const contentStyle: React.CSSProperties = {
@@ -33,6 +27,9 @@ const contentStyle: React.CSSProperties = {
 
 const Index: React.FC = () => {
     const [loading, setLoading] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const [total, setTotal] = useState<number>(0);
+    const [current, setCurrent] = useState<number>(1);
     const [list, setList] = useState<API.InterfaceInfoVO[]>([]);
     const loadData = async (searchText = '', current = 1, pageSize = 5) => {
         setLoading(true);
@@ -42,7 +39,8 @@ const Index: React.FC = () => {
                 current,
                 pageSize,
             }).then((res) => {
-                console.log(res?.data?.records);
+                console.log(res.data);
+                setTotal(res?.data?.total ?? 0);
                 setList(res?.data?.records ?? []);
             });
         } catch (error: any) {
@@ -55,7 +53,18 @@ const Index: React.FC = () => {
     }, []);
 
     const onSearch = (value: string) => {
+        setSearchText(value);
         loadData(value);
+    };
+
+    const onChange: PaginationProps['onChange'] = (pageNumber) => {
+        console.log(pageNumber);
+        setCurrent(pageNumber);
+        loadData(searchText, pageNumber);
+    };
+
+    const onSizeChange = (current: number, size: number) => {
+        loadData(searchText, current, size);
     };
 
     const CardInfo: React.FC<{
@@ -119,14 +128,18 @@ const Index: React.FC = () => {
                             </List.Item>
                         )}
                     />
-
-                    {/*<Card style={{width: 300, marginTop: 16}} loading={loading}>*/}
-                    {/*    <Meta*/}
-                    {/*        avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1"/>}*/}
-                    {/*        title="Card title"*/}
-                    {/*        description="This is the description"*/}
-                    {/*    />*/}
-                    {/*</Card>*/}
+                    <Footer style={footerStyle}>
+                        <Pagination
+                            showQuickJumper
+                            showSizeChanger
+                            pageSizeOptions={[5, 10, 20, 30]}
+                            current={current}
+                            onShowSizeChange={onSizeChange}
+                            defaultPageSize={5}
+                            total={total}
+                            onChange={onChange}
+                        />
+                    </Footer>
                 </Content>
             </Layout>
         </PageContainer>

@@ -95,7 +95,8 @@ const columns: ProColumns<API.InterfaceInfoVO>[] = [
                         });
                         if (res.code === 0) {
                             message.success('申请成功');
-                            // TODO 刷新表格未完成
+                            // 刷新表格
+                            window.location.reload();
                         }
                     }}
                 >
@@ -112,7 +113,7 @@ const Index: React.FC = () => {
     const [total, setTotal] = useState<number>(0);
     const ref = useRef<ActionType>();
 
-    const loadData = async (searchText = '', current = 1, pageSize = 5) => {
+    const loadData = async (searchText = '', current = 1, pageSize = 10) => {
         setLoading(true);
         try {
             await listInterfaceInfoVOByPageUsingPOST({
@@ -161,7 +162,7 @@ const Index: React.FC = () => {
                                 return '总数：' + total;
                             },
                             total,
-                            pageSize: 5,
+                            pageSize: 10,
                             onChange: (page, pageSize) => {
                                 loadData('', page, pageSize);
                             },
