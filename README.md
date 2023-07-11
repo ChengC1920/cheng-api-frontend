@@ -1,57 +1,38 @@
-# Ant Design Pro
+# Nero-API-Frontend
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+## 项目介绍
+Nero-API 接口开放平台前端代码仓库。 这是一个提供API接口供开发者调用的平台
+用户可以登录、注册，开通接口调用权限。接口的调用会被统计，后续可能收费。
+管理员可以发布接口、下线接口、接入接口，以及在线调试接口。
 
-## Environment Prepare
 
-Install `node_modules`:
+## 项目背景
 
-```bash
-npm install
-```
+1. 前端开发都需要使用后端接口来获取数据。
+2. 网上有很多现成的API接口调用平台
 
-or
+自己动手做一个API接口平台：
+1. 用户可以访问前台，登录、注册，开通、关闭接口调用权限。
+2. 管理员可以对接口进行增删改查
 
-```bash
-yarn
-```
+要求：
+1. 防止攻击（安全性）
+2. 不能随意调用（限制、开通）
+3. 统计调用次数
+4. 流量保护
+5. API接入
 
-## Provided Scripts
+## 技术选型
+### 前端
+- Ant Design Pro
+- React
+- Ant Design Procomponents
+- Umi
+- Umi Request（Axios的封装）
 
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
-npm run build
-```
-
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+### 后端
+- Spring Boot
+- Spring Cloud Gateway
+- Dobbo
+- Nacos
+- Spring Boot Starter（SDK开发）

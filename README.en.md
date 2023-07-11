@@ -1,38 +1,38 @@
 # Nero-API-Frontend
 
-## 项目介绍
-Nero-API 接口开放平台前端代码仓库。 这是一个提供API接口供开发者调用的平台
-用户可以登录、注册，开通接口调用权限。接口的调用会被统计，后续可能收费。
-管理员可以发布接口、下线接口、接入接口，以及在线调试接口。
+## Project introduction
+The Nero-API interface opens the front-end code repository of the platform. This is a platform that provides API interface for developers to call.
+Users can log in, register and activate the permission to call the API. The calls to the API will be counted and may be charged later.
+Administrators can publish interfaces, offline interfaces, access interfaces, and online debugging interfaces.
 
 
-## 项目背景
+## Project background
 
-1. 前端开发都需要使用后端接口来获取数据。
-2. 网上有很多现成的API接口调用平台
+1. Front-end developers need to use back-end interfaces to obtain data.
+   two。 There are many ready-made API interface calling platforms on the Internet.
 
-自己动手做一个API接口平台：
-1. 用户可以访问前台，登录、注册，开通、关闭接口调用权限。
-2. 管理员可以对接口进行增删改查
+Make an API interface platform by yourself:
+1. Users can access the front desk, log in, register, enable and disable the permission to call the API.
+   two。 The administrator can add, delete, modify and check the interface
 
-要求：
-1. 防止攻击（安全性）
-2. 不能随意调用（限制、开通）
-3. 统计调用次数 
-4. 流量保护 
-5. API接入
+Request:
+1. Prevent attacks (security)
+2. Cannot be called at will (restrict, activate)
+3. Count the number of calls
+4. Flow protection
+5. API access
 
-## 技术选型
-### 前端
-- Ant Design Pro 
-- React 
+## Technology selection
+### frontend
+- Ant Design Pro
+- React
 - Ant Design Procomponents
 - Umi
-- Umi Request（Axios的封装）
+- Umi Request (encapsulation of Axios)
 
-### 后端
+### backend
 - Spring Boot
-- Spring Cloud Gateway 
-- Dobbo 
+- Spring Cloud Gateway
+- Dobbo
 - Nacos
-- Spring Boot Starter（SDK开发）
+- Spring Boot Starter (SDK development)
