@@ -1,36 +1,38 @@
-# nero-api-frontend
+# Nero-API-Frontend
 
-#### Description
-Nero-API 接口开放平台前端代码仓库。
-
-#### Software Architecture
-Software architecture description
-
-#### Installation
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+## 项目介绍
+Nero-API 接口开放平台前端代码仓库。 这是一个提供API接口供开发者调用的平台
+用户可以登录、注册，开通接口调用权限。接口的调用会被统计，后续可能收费。
+管理员可以发布接口、下线接口、接入接口，以及在线调试接口。
 
 
-#### Gitee Feature
+## 项目背景
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. 前端开发都需要使用后端接口来获取数据。
+2. 网上有很多现成的API接口调用平台
+
+自己动手做一个API接口平台：
+1. 用户可以访问前台，登录、注册，开通、关闭接口调用权限。
+2. 管理员可以对接口进行增删改查
+
+要求：
+1. 防止攻击（安全性）
+2. 不能随意调用（限制、开通）
+3. 统计调用次数 
+4. 流量保护 
+5. API接入
+
+## 技术选型
+### 前端
+- Ant Design Pro 
+- React 
+- Ant Design Procomponents
+- Umi
+- Umi Request（Axios的封装）
+
+### 后端
+- Spring Boot
+- Spring Cloud Gateway 
+- Dobbo 
+- Nacos
+- Spring Boot Starter（SDK开发）
