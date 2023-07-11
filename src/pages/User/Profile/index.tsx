@@ -4,7 +4,7 @@ import {
     updateUserUsingPOST,
     userLoginUsingPOST,
 } from '@/services/nero-api-backend/userController';
-import { useModel } from '@@/exports';
+import {useModel} from '@@/exports';
 import {
     CommentOutlined,
     FieldTimeOutlined,
@@ -15,22 +15,11 @@ import {
     UserOutlined,
     VerifiedOutlined,
 } from '@ant-design/icons';
-import { PageContainer, ProForm, ProFormInstance, ProFormText } from '@ant-design/pro-components';
-import {
-    Button,
-    Card,
-    Col,
-    Divider,
-    message,
-    Modal,
-    Row,
-    Typography,
-    Upload,
-    UploadFile,
-    UploadProps,
-} from 'antd';
-import { RcFile, UploadChangeParam } from 'antd/es/upload';
-import React, { useEffect, useRef, useState } from 'react';
+import {PageContainer, ProForm, ProFormInstance, ProFormText} from '@ant-design/pro-components';
+import {Button, Card, Col, Divider, message, Modal, Row, Typography, Upload, UploadFile, UploadProps,} from 'antd';
+import {RcFile, UploadChangeParam} from 'antd/es/upload';
+import React, {useEffect, useRef, useState} from 'react';
+import {uploadFileUsingPOST} from "@/services/nero-api-backend/fileController";
 
 const { Paragraph } = Typography;
 
@@ -125,12 +114,15 @@ const Profile: React.FC = () => {
      * 上传图片
      * @param info
      */
-    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    const handleChange: UploadProps['onChange'] =(info: UploadChangeParam<UploadFile>) => {
         if (info.file.status === 'uploading') {
             setLoading(true);
             return;
         }
         if (info.file.status === 'done') {
+            // const res = await uploadFileUsingPOST({
+            //     file: info.file.originFileObj as any
+            // })
             if (info.file.response.code === 0) {
                 message.success(`上传成功`);
                 const id = initialState?.loginUser?.id as number;
@@ -183,7 +175,7 @@ const Profile: React.FC = () => {
                                     name="file"
                                     listType="picture-circle"
                                     showUploadList={false}
-                                    action="http://localhost:8101/api/file/upload"
+                                    action="http://124.70.63.241:8101/api/file/upload"
                                     beforeUpload={beforeUpload}
                                     onChange={handleChange}
                                 >

@@ -89,6 +89,7 @@ const Index: React.FC = () => {
             console.log('调用接口请求数据：', res);
             if (res.data) {
                 res.data = res.data.replace(/\\/g, '');
+                // const jsonData = JSON.stringify(res.data as unknown as string);
                 setInvokeRes(res.data);
                 message.success('接口请求成功');
             } else {

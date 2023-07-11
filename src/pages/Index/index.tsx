@@ -21,91 +21,6 @@ const contentStyle: React.CSSProperties = {
     lineHeight: '120px',
 };
 
-/**
- * table 展示的列
- * */
-const columns: ProColumns<API.InterfaceInfoVO>[] = [
-    {
-        title: 'id',
-        dataIndex: 'id',
-        valueType: 'index',
-        align: 'center',
-    },
-    {
-        title: '接口名称',
-        dataIndex: 'name',
-        valueType: 'text',
-        align: 'center',
-    },
-    {
-        title: '描述',
-        dataIndex: 'description',
-        valueType: 'textarea',
-        align: 'center',
-    },
-    {
-        title: '请求方法',
-        dataIndex: 'method',
-        valueType: 'text',
-        align: 'center',
-    },
-    {
-        title: '状态',
-        dataIndex: 'status',
-        hideInForm: true,
-        valueEnum: {
-            0: {
-                text: '关闭',
-                status: 'Default',
-            },
-            1: {
-                text: '开启',
-                status: 'Processing',
-            },
-        },
-        align: 'center',
-    },
-    {
-        title: '创建时间',
-        dataIndex: 'createTime',
-        valueType: 'dateTime',
-        align: 'center',
-    },
-    {
-        title: '操作',
-        dataIndex: 'option',
-        valueType: 'option',
-        render: (_, record) => {
-            return record.isOwnerByCurrentUser ? (
-                <Button
-                    type="primary"
-                    key="onlineUse"
-                    onClick={() => {
-                        history.push(`/interface_info/${record.id}`);
-                    }}
-                >
-                    在线调用
-                </Button>
-            ) : (
-                <Button
-                    key="applyInterface"
-                    onClick={async () => {
-                        const res = await addUserInterfaceInfoUsingPOST({
-                            interfaceInfoId: Number(record.id),
-                        });
-                        if (res.code === 0) {
-                            message.success('申请成功');
-                            // 刷新表格
-                            window.location.reload();
-                        }
-                    }}
-                >
-                    开通接口
-                </Button>
-            );
-        },
-    },
-];
 
 const Index: React.FC = () => {
     const [loading, setLoading] = useState(false);
@@ -129,6 +44,93 @@ const Index: React.FC = () => {
         }
         setLoading(false);
     };
+
+
+    /**
+     * table 展示的列
+     * */
+    const columns: ProColumns<API.InterfaceInfoVO>[] = [
+        {
+            title: 'id',
+            dataIndex: 'id',
+            valueType: 'index',
+            align: 'center',
+        },
+        {
+            title: '接口名称',
+            dataIndex: 'name',
+            valueType: 'text',
+            align: 'center',
+        },
+        {
+            title: '描述',
+            dataIndex: 'description',
+            valueType: 'textarea',
+            align: 'center',
+        },
+        {
+            title: '请求方法',
+            dataIndex: 'method',
+            valueType: 'text',
+            align: 'center',
+        },
+        {
+            title: '状态',
+            dataIndex: 'status',
+            hideInForm: true,
+            valueEnum: {
+                0: {
+                    text: '关闭',
+                    status: 'Default',
+                },
+                1: {
+                    text: '开启',
+                    status: 'Processing',
+                },
+            },
+            align: 'center',
+        },
+        {
+            title: '创建时间',
+            dataIndex: 'createTime',
+            valueType: 'dateTime',
+            align: 'center',
+        },
+        {
+            title: '操作',
+            dataIndex: 'option',
+            valueType: 'option',
+            render: (_, record) => {
+                return record.isOwnerByCurrentUser ? (
+                    <Button
+                        type="primary"
+                        key="onlineUse"
+                        onClick={() => {
+                            history.push(`/interface_info/${record.id}`);
+                        }}
+                    >
+                        在线调用
+                    </Button>
+                ) : (
+                    <Button
+                        key="applyInterface"
+                        onClick={async () => {
+                            const res = await addUserInterfaceInfoUsingPOST({
+                                interfaceInfoId: Number(record.id),
+                            });
+                            if (res.code === 0) {
+                                message.success('申请成功');
+                                // 刷新表格
+                                await loadData();
+                            }
+                        }}
+                    >
+                        开通接口
+                    </Button>
+                );
+            },
+        },
+    ];
 
     useEffect(() => {
         loadData();
